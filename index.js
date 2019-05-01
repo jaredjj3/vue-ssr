@@ -6,10 +6,8 @@ const app = new Vue({
   template: `<div>Hello, world!</div>`,
 });
 
-// Create renderer
-const renderer = vsr.createRenderer();
-
 // Render vue into HTML
+const renderer = vsr.createRenderer();
 renderer.renderToString(app).then((html) => {
   console.log(html);
 }).catch((error) => {
