@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start": "nodemon index.js"
+  },
   "dependencies": {
     "express": "^4.16.4",
     "vue": "2.6.10",
