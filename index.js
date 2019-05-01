@@ -15,7 +15,11 @@ server.get('*', (req, res) => {
     template: fs.readFileSync('./index.template.html', 'utf-8'),
   });
 
-  renderer.renderToString(app).then((html) => {
+  const context = {
+    title: 'I AM TITLE',
+  };
+
+  renderer.renderToString(app, context).then((html) => {
     res.end(html);
   }).catch((error) => {
     console.error(error);
