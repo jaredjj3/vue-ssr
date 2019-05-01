@@ -1,25 +1,20 @@
-const Vue = require('vue');
-const vsr = require('vue-server-renderer');
+const createApp = require('./createApp');
 const fs = require('fs');
 const server = require('express')();
+const vsr = require('vue-server-renderer');
 
 server.get('*', (req, res) => {
-  const app = new Vue({
-    data: {
-      url: req.url,
-    },
-    template: `<div>The visited URL is: {{ url }}</div>`,
+  const app = createApp({
+    url: req.url,
   });
 
   const renderer = vsr.createRenderer({
     template: fs.readFileSync('./index.template.html', 'utf-8'),
   });
 
-  const context = {
+  renderer.renderToString(app, {
     title: 'I AM TITLE',
-  };
-
-  renderer.renderToString(app, context).then((html) => {
+  }).then((html) => {
     res.end(html);
   }).catch((error) => {
     console.error(error);
