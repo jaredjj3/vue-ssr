@@ -2,5 +2,9 @@
   "dependencies": {
     "vue": "2.6.10",
     "vue-server-renderer": "2.6.10"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-google": "^0.12.0"
   }
 }
