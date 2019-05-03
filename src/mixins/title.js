@@ -1,5 +1,5 @@
 const getTitle = (vm) => {
-  const {title} = vm.$options;
+  const { title } = vm.$options;
   if (title) {
     return typeof title === 'function'
       ? title.call(vm)

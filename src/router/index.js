@@ -12,12 +12,12 @@ export const createRouter = () => {
   return new Router({
     mode: 'history',
     fallback: false,
-    scrollBehavior: () => ({y: 0}),
+    scrollBehavior: () => ({ y: 0 }),
     routes: [
-      {path: '/foo', component: FooView},
-      {path: '/bar', component: BarView},
-      {path: '/baz', component: BazView},
-      {path: '/', redirect: '/foo'},
+      { path: '/foo', component: FooView },
+      { path: '/bar', component: BarView },
+      { path: '/baz', component: BazView },
+      { path: '/', redirect: '/foo' },
     ],
   });
 };

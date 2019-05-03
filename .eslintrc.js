@@ -14,6 +14,7 @@ module.exports = {
         "sourceType": "module"
     },
     "rules": {
-      "semi": "error"
+      "semi": "error",
+      "object-curly-spacing": ["error", "always"]
     },
 };
