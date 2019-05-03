@@ -12,7 +12,7 @@ export default {
     key: String
   },
   computed: {
-    val: () => this.$store.state[this.key].toString()
+    val: () => this.$store.state[this.key]
   }
 }
 </script>
