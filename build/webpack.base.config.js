@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const {VueLoaderPlugin} = require('vue-loader');
+const { VueLoaderPlugin } = require('vue-loader');
 
 // conditional configuration
 const config = {};
@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
   config.plugins = [
     new VueLoaderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
-      compress: {warnings: false},
+      compress: { warnings: false },
     }),
     new ExtractTextPlugin({
       filename: 'common.[chunkhash].css',
