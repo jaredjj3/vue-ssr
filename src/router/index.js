@@ -17,6 +17,7 @@ export const createRouter = () => {
       {path: '/foo', component: FooView},
       {path: '/bar', component: BarView},
       {path: '/baz', component: BazView},
+      {path: '/', redirect: '/foo'},
     ],
   });
 };
