@@ -1,10 +1,10 @@
 <template>
-  <div>
-    I AM BAZ VIEW
-  </div>
+  <base-view :key="baz"></base-view>
 </template>
 
 <script>
+import BaseView from './BaseView';
+
 export default {
   name: 'baz-view'
 }
