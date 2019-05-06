@@ -8,5 +8,5 @@ Starts an express server on port 8080.
 
 ## Resources
 
-https://ssr.vuejs.org
-https://github.com/vuejs/vue-hackernews-2.0
+- https://ssr.vuejs.org
+- https://github.com/vuejs/vue-hackernews-2.0
