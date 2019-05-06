@@ -1,7 +1,7 @@
 <template>
   <div>
-    {{ key }}
-    {{ val }}
+    <h1>{{ storeKey }}</h1>
+    {{ value }}
   </div>
 </template>
 
@@ -9,10 +9,20 @@
 export default {
   name: 'base-view',
   props: {
-    key: String
+    storeKey: String
+  },
+  created() {
+    if (typeof this.$store.state[this.storeKey] === 'undefined') {
+      this.$store.commit('SET_VALUE', {
+        storeKey: this.storeKey,
+        value: `created on ${process.env.VUE_ENV}`,
+      });
+    }
   },
   computed: {
-    val: () => this.$store.state[this.key]
+    value() {
+      return this.$store.state[this.storeKey];
+    }
   }
 }
 </script>

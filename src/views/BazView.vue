@@ -1,11 +1,12 @@
 <template>
-  <base-view :key="baz"></base-view>
+  <base-view :storeKey="'baz'"></base-view>
 </template>
 
 <script>
-import BaseView from './BaseView';
+import BaseView from './BaseView.vue';
 
 export default {
-  name: 'baz-view'
+  name: 'baz-view',
+  components: { BaseView }
 }
 </script>

@@ -15,7 +15,7 @@ export default (context) => {
     const { fullPath } = router.resolve(url).route;
 
     if (fullPath !== url) {
-      return reject(new Error({ url: fullPath }));
+      return reject({ url: fullPath });
     }
 
     // set router's location
@@ -25,7 +25,7 @@ export default (context) => {
     router.onReady(() => {
       const matchedComponents = router.getMatchedComponents();
       if (matchedComponents.length === 0) {
-        return reject(new Error({ code: 404 }));
+        return reject({ code: 404 });
       }
 
       // Call fetchData hooks on components matched by the route.

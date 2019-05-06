@@ -1,7 +1,5 @@
-const rand = () => Math.random().toString();
-
 export default {
-  foo: rand(),
-  bar: rand(),
-  baz: rand(),
+  foo: undefined,
+  bar: undefined,
+  baz: undefined,
 };

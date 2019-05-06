@@ -1,5 +1,5 @@
 export default {
-  SET_DATA: (state, { key, data }) => {
-    state[key] = data;
+  SET_VALUE: (state, { storeKey, value }) => {
+    state[storeKey] = value;
   },
 };

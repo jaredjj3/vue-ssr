@@ -1,7 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
-const {createBundleRenderer} = require('vue-server-renderer');
+const favicon = require('serve-favicon');
+const compression = require('compression');
+const { createBundleRenderer } = require('vue-server-renderer');
 
 const resolve = (file) => path.resolve(__dirname, file);
 const isProd = process.env.NODE_ENV === 'production';
@@ -50,6 +52,8 @@ const serve = (path) => express.static(resolve(path), {
   maxAge: isProd ? 1000 * 60 * 60 * 24 * 30 : 0,
 });
 
+app.use(compression({ threshold: 0 }));
+app.use(favicon('./public/logo-48.png'));
 app.use('/dist', serve('./dist', true));
 app.use('/public', serve('./public', true));
 app.use('/manifest.json', serve('./manifest.json', true));
@@ -72,7 +76,7 @@ const render = (req, res) => {
     } else {
       res.status(500).send('500 | Internal Server Error');
       console.error(`error during render: ${req.url}`);
-      console.error(error.stack);
+      console.error(error);
     }
   };
 
