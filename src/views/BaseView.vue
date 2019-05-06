@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>{{ storeKey }}</h1>
-    {{ value }}
+    <p>{{ value }}</p>
   </div>
 </template>
 
