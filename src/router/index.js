@@ -1,8 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-// import FooView from '../views/FooView.vue';
-// import BarView from '../views/BarView.vue';
-// import BazView from '../views/BazView.vue';
 
 Vue.use(Router);
 
