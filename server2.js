@@ -27,11 +27,9 @@ app.get('/templates/:templateName', (req, res) => {
   const { templateName } = req.params;
   if (templates.hasOwnProperty(templateName)) {
     const template = templates[templateName];
-    const context = {
-      title: 'Hello, world!',
-      body: 'Rendered by Handlebars',
-    };
-    const html = template(context);
+    const html = template({
+      body: 'rendered by Handlebars',
+    });
     res.send(html);
   } else {
     res.status(404).send(`template '${templateName}' not found`);
