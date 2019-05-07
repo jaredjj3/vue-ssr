@@ -16,8 +16,8 @@ fs.readdir(dir, (error, files) => {
   for (const file of files) {
     const srcPath = resolve(`${dir}${file}`);
     const src = fs.readFileSync(srcPath, 'utf-8');
-    const filename = path.basename(srcPath, '.mustache');
-    templates[filename] = Handlebars.compile(src);
+    const templateName = path.basename(srcPath, '.mustache');
+    templates[templateName] = Handlebars.compile(src);
   }
 });
 
