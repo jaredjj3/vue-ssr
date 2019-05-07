@@ -25,9 +25,7 @@ fs.readdir(dir, (error, files) => {
 const app = express();
 app.get('/templates/:templateName', (req, res) => {
   const { templateName } = req.params;
-  if (!templates.hasOwnProperty(templateName)) {
-    res.status(404).send(`template '${templateName}' not found`);
-  } else {
+  if (templates.hasOwnProperty(templateName)) {
     const template = templates[templateName];
     const context = {
       title: 'Hello, world!',
@@ -35,6 +33,8 @@ app.get('/templates/:templateName', (req, res) => {
     };
     const html = template(context);
     res.send(html);
+  } else {
+    res.status(404).send(`template '${templateName}' not found`);
   }
 });
 
