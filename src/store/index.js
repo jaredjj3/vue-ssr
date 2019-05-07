@@ -8,7 +8,6 @@ import getters from './getters';
 Vue.use(Vuex);
 
 export const createStore = () => {
-  console.log('store created');
   return new Vuex.Store({
     state: getDefaultState(),
     actions,

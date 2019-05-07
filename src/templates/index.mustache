@@ -1,7 +1,5 @@
 <div>
-  <div>
-    {{body}}
-    {{> vueComponent name="Foo" }}
-    {{> vueComponent name="Bar" }}
-  </div>
+  {{body}}
+  {{ renderVueComponent name="Foo" }}
+  {{ renderVueComponent name="Bar" }}
 </div>

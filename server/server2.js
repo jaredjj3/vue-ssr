@@ -4,14 +4,10 @@ const express = require('express');
 const Handlebars = require('handlebars');
 
 const resolve = (file) => path.resolve(__dirname, file);
+const app = express();
 
 // handlebars
-Handlebars.registerHelper('renderVueComponent', (name) => {
-  console.log(`${name} rendered!`);
-});
-Handlebars.registerPartial('vueComponent',
-    '<!--vue-ssr-outlet-->{{renderVueComponent name}}'
-);
+Handlebars.registerHelper('renderVueComponent', renderVueComponent);
 const templates = {};
 const dir = './src/templates/';
 fs.readdir(dir, (error, fileNames) => {
@@ -27,7 +23,6 @@ fs.readdir(dir, (error, fileNames) => {
 });
 
 // express
-const app = express();
 app.get('/templates/:templateName', (req, res) => {
   const { templateName } = req.params;
   if (templates.hasOwnProperty(templateName)) {
