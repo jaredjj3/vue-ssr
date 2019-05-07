@@ -3,12 +3,16 @@ const path = require('path');
 const express = require('express');
 const Handlebars = require('handlebars');
 
-const app = express();
 const resolve = (file) => path.resolve(__dirname, file);
+
+// handlebars
+Handlebars.registerPartial('vueComponent', '<!--vue-ssr-outlet-->');
 const srcPath = resolve('./src/templates/index.handlebars');
 const src = fs.readFileSync(srcPath, 'utf-8');
 const template = Handlebars.compile(src);
 
+// express
+const app = express();
 app.get('*', (req, res) => {
   const context = {
     title: 'Hello, world!',
