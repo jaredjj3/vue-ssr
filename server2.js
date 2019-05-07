@@ -6,15 +6,20 @@ const Handlebars = require('handlebars');
 const resolve = (file) => path.resolve(__dirname, file);
 
 // handlebars
-Handlebars.registerPartial('vueComponent', '<!--vue-ssr-outlet-->');
+Handlebars.registerHelper('renderVueComponent', (name) => {
+  console.log(`${name} rendered!`);
+});
+Handlebars.registerPartial('vueComponent',
+    '<!--vue-ssr-outlet-->{{renderVueComponent name}}'
+);
 const templates = {};
 const dir = './src/templates/';
-fs.readdir(dir, (error, files) => {
+fs.readdir(dir, (error, fileNames) => {
   if (error) {
     throw error;
   }
-  for (const file of files) {
-    const srcPath = resolve(`${dir}${file}`);
+  for (const fileName of fileNames) {
+    const srcPath = resolve(`${dir}${fileName}`);
     const src = fs.readFileSync(srcPath, 'utf-8');
     const templateName = path.basename(srcPath, '.mustache');
     templates[templateName] = Handlebars.compile(src);
