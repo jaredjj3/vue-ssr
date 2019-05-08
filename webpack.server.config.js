@@ -6,10 +6,9 @@ const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 
 module.exports = merge(baseConfig, {
   target: 'node',
-  devtool: '#source-map',
+  devtool: 'source-map',
   entry: './src/entry-server.js',
   output: {
-    filename: 'server-bundle.js',
     libraryTarget: 'commonjs2',
   },
   // https://webpack.js.org/configuration/externals/#externals

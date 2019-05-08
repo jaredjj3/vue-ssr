@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 
@@ -9,9 +8,6 @@ if (process.env.NODE_ENV === 'production') {
   config.devtool = false;
   config.plugins = [
     new VueLoaderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: { warnings: false },
-    }),
     new ExtractTextPlugin({
       filename: 'common.[chunkhash].css',
     }),
@@ -24,7 +20,7 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   devtool: config.devtool,
   output: {
-    path: path.resolve(__dirname, '../dist'),
+    path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
     filename: '[name].[chunkhash].js',
   },

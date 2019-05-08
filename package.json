@@ -6,18 +6,17 @@
   "scripts": {
     "dev": "node server",
     "start": "cross-env NODE_ENV=production node server",
+    "watch": "yarn build --watch",
     "build": "rimraf dist && yarn build:client && yarn build:server",
     "build:client": "cross-env NODE_ENV=production webpack --config webpack.client.config.js --progress --hide-modules",
     "build:server": "cross-env NODE_ENV=production webpack --config webpack.server.config.js --progress --hide-modules"
   },
   "dependencies": {
-    "compression": "^1.7.4",
     "cross-env": "^5.2.0",
     "es6-promise": "^4.2.6",
     "express": "^4.16.4",
     "extract-text-webpack-plugin": "^3.0.2",
     "handlebars": "^4.1.2",
-    "serve-favicon": "^2.5.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.6",
     "vue-server-renderer": "^2.6.10",
@@ -30,7 +29,6 @@
     "babel-loader": "^8.0.5",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-preset-env": "^1.7.0",
-    "chokidar": "^3.0.0",
     "css-loader": "^2.1.1",
     "eslint": "^5.16.0",
     "eslint-config-google": "^0.12.0",
@@ -39,10 +37,7 @@
     "url-loader": "^1.1.2",
     "vue-loader": "^15.7.0",
     "vue-template-compiler": "^2.6.10",
-    "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.1",
-    "webpack-dev-middleware": "^3.6.2",
-    "webpack-hot-middleware": "^2.24.4",
+    "webpack": "3.8.1",
     "webpack-merge": "^4.2.1",
     "webpack-node-externals": "^1.7.2"
   }
