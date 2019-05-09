@@ -23,12 +23,10 @@ app.get('/templates/:templateName', (req, res) => {
   const template = templates[templateName];
   const components = [];
   const body = 'rendered by Handlebars';
-  let store;
-  let router;
 
   // the renderVueComponent helper populates the components array
   registerHandlebarHelpers(components);
-  let html = template({ body, store, router });
+  let html = template({ body });
 
   // renderComponent returns a promise that will return a component
   // that has its html field populated with the corresponding Vue

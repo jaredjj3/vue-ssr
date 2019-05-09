@@ -9,7 +9,5 @@ module.exports = (componentName, helperOptions) => {
     componentName,
     html: '',
     props: helperOptions.hash,
-    store: helperOptions.data.root.store,
-    router: helperOptions.data.root.router,
   };
 };

@@ -2,12 +2,18 @@
   <div>
     <h1>{{ storeKey }}</h1>
     <p>{{ value }}</p>
+    <counter></counter>
   </div>
 </template>
 
 <script>
+import Counter from '../components/Counter.vue';
+
 export default {
   name: 'base-view',
+  components: {
+    Counter
+  },
   props: {
     storeKey: String
   },
