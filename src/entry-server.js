@@ -9,6 +9,7 @@ import { createStore } from './store';
 // return a Promise that resolves to the app instance.
 export default (context) => {
   const store = createStore();
+  console.log(context);
   return new Vue({
     store,
     render: (h) => h(Foo),

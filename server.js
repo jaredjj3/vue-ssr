@@ -1,47 +1,15 @@
 const express = require('express');
-const Handlebars = require('handlebars');
-const getTemplates = require('./getTemplates');
+const getTemplates = require('./utils/getTemplates');
+const renderComponent = require('./utils/renderComponent');
+const registerHandlebarHelpers = require('./utils/registerHandlebarHelpers');
 const { createBundleRenderer } = require('vue-server-renderer');
 const bundle = require('./dist/vue-ssr-server-bundle.json');
 const clientManifest = require('./dist/vue-ssr-client-manifest.json');
-const uuid = require('uuid');
 
 const app = express();
-
-const renderer = createBundleRenderer(bundle, {
-  clientManifest,
-});
-const render = (component) => {
-  const { props, store, router } = component;
-  const context = { props, store, router };
-  return renderer.renderToString(context).then((html) => {
-    component.html = html;
-    return component;
-  });
-};
-
-// handlebars
-const getRenderVueComponent = (components) => (name, options) => {
-  const id = uuid.v4();
-  const placeholder = `<!-- ${id} -->`;
-  components.push({
-    placeholder,
-    html: '',
-    props: options.hash,
-    store: options.data.store,
-    router: options.data.router,
-  });
-  return placeholder;
-};
-const registerHandlebarHelpers = (components) => {
-  Handlebars.registerHelper(
-      'renderVueComponent',
-      getRenderVueComponent(components)
-  );
-};
+const renderer = createBundleRenderer(bundle, { clientManifest });
 const templates = getTemplates('./src/templates/');
 
-// express
 app.get('/templates/:templateName', (req, res) => {
   const { templateName } = req.params;
   if (!templates.hasOwnProperty(templateName)) {
@@ -55,21 +23,26 @@ app.get('/templates/:templateName', (req, res) => {
   const template = templates[templateName];
   const components = [];
   const body = 'rendered by Handlebars';
-  const store = 'store';
-  const router = 'router';
+  let store;
+  let router;
+
+  // the renderVueComponent helper populates the components array
   registerHandlebarHelpers(components);
   let html = template({ body, store, router });
 
-  // Parse the html, and determine which vue components to render.
-  // Do not send a response until all of the VueComponents successfully
-  // render.
-  const promises = [];
+  // renderComponent returns a promise that will return a component
+  // that has its html field populated with the corresponding Vue
+  // component
+  const renders = [];
   for (const component of components) {
-    const promise = render(component);
-    promises.push(promise);
+    const promise = renderComponent(renderer, component);
+    renders.push(promise);
   }
 
-  Promise.all(promises).then((components) => {
+  // When all the Vue components are rendered, take the response
+  // html and replace the placeholder comments with each component's
+  // corresponding html property
+  Promise.all(renders).then((components) => {
     for (const component of components) {
       html = html.replace(component.placeholder, component.html);
     }
