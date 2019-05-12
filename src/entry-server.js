@@ -8,10 +8,22 @@ import { createStore } from './store';
 // Since data fetching is async, this function is expected to
 // return a Promise that resolves to the app instance.
 export default (context) => {
-  const store = createStore();
-  console.log(context);
-  return new Vue({
-    store,
-    render: (h) => h(Foo),
+  return new Promise((resolve, reject) => {
+    const store = createStore();
+
+    context.rendered = () => {
+      context.state = store.state;
+    };
+
+    const app = new Vue({
+      store,
+      render: (createElement) => createElement(Foo, {
+        attrs: {
+          class: context.componentName.toLowerCase(),
+        },
+      }),
+    });
+
+    resolve(app);
   });
 };

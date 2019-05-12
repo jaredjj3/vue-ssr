@@ -5,10 +5,17 @@ const registerHandlebarHelpers = require('./utils/registerHandlebarHelpers');
 const { createBundleRenderer } = require('vue-server-renderer');
 const bundle = require('./dist/vue-ssr-server-bundle.json');
 const clientManifest = require('./dist/vue-ssr-client-manifest.json');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
-const renderer = createBundleRenderer(bundle, { clientManifest });
 const templates = getTemplates('./src/templates/');
+
+const resolve = (file) => path.resolve(__dirname, file);
+const serve = (path) => express.static(resolve(path));
+
+app.use('/dist', serve('./dist'));
+app.use('/public', serve('./public'));
 
 app.get('/templates/:templateName', (req, res) => {
   const { templateName } = req.params;
@@ -32,10 +39,19 @@ app.get('/templates/:templateName', (req, res) => {
   // that has its html field populated with the corresponding Vue
   // component
   const renders = [];
-  for (const component of components) {
-    const promise = renderComponent(renderer, component);
-    renders.push(promise);
-  }
+  renders.push(renderComponent(
+      createBundleRenderer(bundle, {
+        clientManifest,
+      }),
+      components[0]
+  ));
+  renders.push(renderComponent(
+      createBundleRenderer(bundle, {
+        clientManifest,
+        template: fs.readFileSync('./src/index.template.html', 'utf-8'),
+      }),
+      components[1]
+  ));
 
   // When all the Vue components are rendered, take the response
   // html and replace the placeholder comments with each component's

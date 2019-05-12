@@ -5,6 +5,7 @@ module.exports = (componentName, helperOptions) => {
   const placeholder = `<!-- ${id} -->`;
 
   return {
+    id,
     placeholder,
     componentName,
     html: '',

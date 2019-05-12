@@ -1,7 +1,7 @@
 <template>
   <div>
     {{ count }}
-    <button>Click Me</button>
+    <button @click="increment">Increment</button>
   </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
     }
   },
   methods: {
-    onClick() {
+    increment() {
       this.count++;
     }
   }
