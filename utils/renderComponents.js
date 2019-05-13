@@ -59,6 +59,7 @@ module.exports = (bundle, clientManifest, components) => {
     const context = {
       ...component,
       getStore,
+      isPage: false,
     };
     const renderPromise = renderer.renderToString(context).then((html) => {
       component.html = html;
@@ -67,5 +68,5 @@ module.exports = (bundle, clientManifest, components) => {
     renders.push(renderPromise);
   }
 
-  return renders;
+  return Promise.all(renders);
 };

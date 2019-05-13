@@ -4,9 +4,9 @@ import Router from 'vue-router';
 Vue.use(Router);
 
 // route-level code splitting
-const FooView = () => import('../views/FooView.vue');
-const BarView = () => import('../views/BarView.vue');
-const BazView = () => import('../views/BazView.vue');
+const FooPage = () => import('../pages/FooPage.vue');
+const BarPage = () => import('../pages/BarPage.vue');
+const BazPage = () => import('../pages/BazPage.vue');
 
 export const createRouter = () => {
   return new Router({
@@ -14,9 +14,9 @@ export const createRouter = () => {
     fallback: false,
     routes: [
       { path: '/', redirect: '/foo' },
-      { path: '/foo', component: FooView },
-      { path: '/bar', component: BarView },
-      { path: '/baz', component: BazView },
+      { path: '/foo', component: FooPage },
+      { path: '/bar', component: BarPage },
+      { path: '/baz', component: BazPage },
     ],
   });
 };

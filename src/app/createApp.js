@@ -2,13 +2,11 @@ import Vue from 'vue';
 import { createStore } from '../store';
 import { createRouter } from '../router';
 import { sync } from 'vuex-router-sync';
-import title from '../mixins/title';
-
-Vue.mixin(title);
+import App from './App.vue';
 
 // Expose a factory function that creates a fresh set of store, router,
 // app instances on each call (which is called for each SSR request)
-export const createApp = () => {
+export default () => {
   const store = createStore();
   const router = createRouter();
 

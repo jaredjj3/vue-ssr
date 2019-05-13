@@ -10,7 +10,7 @@
 import Counter from '../components/Counter.vue';
 
 export default {
-  name: 'base-view',
+  name: 'base-page',
   components: {
     Counter
   },
