@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import Foo from '../views/FooView.vue';
 import { createStore } from '../store';
 import { createRouter } from '../router';
 import { sync } from 'vuex-router-sync';
@@ -23,7 +22,7 @@ export const createApp = () => {
   const app = new Vue({
     router,
     store,
-    render: (h) => h(Foo),
+    render: (h) => h(App),
   });
 
   // expose the app, the router and the store.

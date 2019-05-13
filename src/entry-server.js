@@ -1,6 +1,6 @@
 import Vue from 'vue';
-import Foo from './views/FooView.vue';
 import { createStore } from './store';
+import getComponent from './components/getComponent';
 
 // This exported function will be called by `bundleRenderer`.
 // This is where we perform data-prefetching to determine the
@@ -8,19 +8,29 @@ import { createStore } from './store';
 // Since data fetching is async, this function is expected to
 // return a Promise that resolves to the app instance.
 export default (context) => {
-  return new Promise((resolve, reject) => {
-    const store = createStore();
+  return new Promise((resolve) => {
+    const store = context.getStore(createStore);
+    const component = getComponent(context.componentName);
 
-    context.rendered = () => {
-      context.state = store.state;
-    };
+    if (!component) {
+      return resolve(
+          new Vue({
+            store,
+            template: `<div></div>`,
+          })
+      );
+    }
+
+    const attrs = {};
+    if (context.id) {
+      attrs.id = context.id.toString();
+    }
 
     const app = new Vue({
       store,
-      render: (createElement) => createElement(Foo, {
-        attrs: {
-          class: context.componentName.toLowerCase(),
-        },
+      render: (createElement) => createElement(component, {
+        attrs,
+        props: context.props,
       }),
     });
 

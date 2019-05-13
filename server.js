@@ -1,18 +1,16 @@
-const express = require('express');
-const getTemplates = require('./utils/getTemplates');
-const renderComponent = require('./utils/renderComponent');
-const registerHandlebarHelpers = require('./utils/registerHandlebarHelpers');
-const { createBundleRenderer } = require('vue-server-renderer');
 const bundle = require('./dist/vue-ssr-server-bundle.json');
 const clientManifest = require('./dist/vue-ssr-client-manifest.json');
-const fs = require('fs');
+const express = require('express');
+const getHandlebarsTemplates = require('./utils/getHandlebarsTemplates');
+const injectComponents = require('./utils/injectComponents');
 const path = require('path');
+const registerHandlebarHelpers = require('./utils/registerHandlebarHelpers');
+const renderComponents = require('./utils/renderComponents');
 
 const app = express();
-const templates = getTemplates('./src/templates/');
+const templates = getHandlebarsTemplates('./src/templates/');
 
-const resolve = (file) => path.resolve(__dirname, file);
-const serve = (path) => express.static(resolve(path));
+const serve = (file) => express.static(path.resolve(__dirname, file));
 
 app.use('/dist', serve('./dist'));
 app.use('/public', serve('./public'));
@@ -33,35 +31,24 @@ app.get('/templates/:templateName', (req, res) => {
 
   // the renderVueComponent helper populates the components array
   registerHandlebarHelpers(components);
-  let html = template({ body });
+  const html = template({ body });
 
   // renderComponent returns a promise that will return a component
   // that has its html field populated with the corresponding Vue
   // component
-  const renders = [];
-  renders.push(renderComponent(
-      createBundleRenderer(bundle, {
-        clientManifest,
-      }),
-      components[0]
-  ));
-  renders.push(renderComponent(
-      createBundleRenderer(bundle, {
-        clientManifest,
-        template: fs.readFileSync('./src/index.template.html', 'utf-8'),
-      }),
-      components[1]
-  ));
+  const renders = renderComponents(bundle, clientManifest, components);
 
   // When all the Vue components are rendered, take the response
   // html and replace the placeholder comments with each component's
   // corresponding html property
-  Promise.all(renders).then((components) => {
-    for (const component of components) {
-      html = html.replace(component.placeholder, component.html);
-    }
-    res.status(200).send(html);
-  });
+  Promise.all(renders)
+      .then(() => {
+        res.status(200).send(injectComponents(html, components));
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send(error);
+      });
 });
 
 const port = process.env.PORT || 8080;
