@@ -8,7 +8,7 @@ const registerHandlebarHelpers = require('./utils/registerHandlebarHelpers');
 const renderComponents = require('./utils/renderComponents');
 
 const app = express();
-const templates = getHandlebarsTemplates('./src/templates/');
+const templates = getHandlebarsTemplates('./templates/');
 
 const serve = (file) => express.static(path.resolve(__dirname, file));
 

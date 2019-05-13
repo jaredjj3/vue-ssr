@@ -5,7 +5,7 @@ const isAssetsComponent = (component) => {
   return component.componentName === 'Assets';
 };
 
-const getAssetsTemplate = (components, getStore) => (html, context) => {
+const getAssetsTemplate = (components, getStore) => (_html, context) => {
   const hydrationSpecs = [];
   for (const component of components) {
     if (!isAssetsComponent(component)) {
@@ -15,31 +15,28 @@ const getAssetsTemplate = (components, getStore) => (html, context) => {
   }
 
   context.state = getStore().state;
-  const wInitialState = context.renderState({
+  const windowInitialState = context.renderState({
     windowKey: '__INITIAL_STATE__',
   });
 
   context.state = hydrationSpecs;
-  const wHydrationSpecs = context.renderState({
+  const windowHydrationSpecs = context.renderState({
     windowKey: '__HYDRATION_SPECS__',
   });
 
   const scripts = context.renderScripts();
 
-  const styles = context.renderStyles();
-
   return [
-    wInitialState,
-    wHydrationSpecs,
+    windowInitialState,
+    windowHydrationSpecs,
     scripts,
-    styles,
   ].join('\n');
 };
 
 module.exports = (bundle, clientManifest, components) => {
   const renders = [];
 
-  // callback
+  // set store
   const f = () => {
     let store;
     return (createStore) => {
