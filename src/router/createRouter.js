@@ -8,7 +8,7 @@ const FooPage = () => import('../pages/FooPage.vue');
 const BarPage = () => import('../pages/BarPage.vue');
 const BazPage = () => import('../pages/BazPage.vue');
 
-export const createRouter = () => {
+export default () => {
   return new Router({
     mode: 'history',
     fallback: false,

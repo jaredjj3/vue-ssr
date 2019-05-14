@@ -7,7 +7,7 @@ import getters from './getters';
 
 Vue.use(Vuex);
 
-export const createStore = () => {
+export default () => {
   return new Vuex.Store({
     state: getDefaultState(),
     actions,

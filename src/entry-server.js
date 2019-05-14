@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { createStore } from './store';
+import createStore from './store/createStore';
 import getComponent from './components/getComponent';
 import createApp from './app/createApp';
 
