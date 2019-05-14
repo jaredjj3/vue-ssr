@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <body>
-    <h1>Vue-in-Handlebars Test</h1>
+    <h1>Vue-in-Handlebars SSR Test</h1>
     <p>
       The purpose of this test is to render Vue components inside of a mustache template.
       First, the server will find the mustache template that matches the route.
     </p>
     <p>
-      During the first pass of rendering, Mustache will <em>synchronously</em> invoke
+      During the first pass of rendering, Handlebars will <em>synchronously</em> invoke
       the template with a given context. Whenever the helper <code>renderVueComponent</code>
       is called, it will render a placeholder string (as an HTML comment). The server
       will keep track of Vue components that need to be rendered in the second pass.
