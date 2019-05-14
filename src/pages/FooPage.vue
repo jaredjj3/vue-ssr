@@ -1,5 +1,5 @@
 <template>
-  <base-page :storeKey="'foo'"></base-page>
+  <base-page :pageName="'foo'"></base-page>
 </template>
 
 <script>

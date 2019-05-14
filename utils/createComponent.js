@@ -8,7 +8,7 @@ const uuid = require('uuid');
  * @param {object} props
  * @return {Component}
  */
-module.export = (componentName, props) => {
+module.exports = (componentName, props) => {
   const id = `vc-${uuid.v4()}`;
   const placeholder = `<!-- ${id} -->`;
 

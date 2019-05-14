@@ -1,9 +1,5 @@
 <template>
-  <div>
-    <h1>{{ storeKey }}</h1>
-    <p>{{ value }}</p>
-    <counter></counter>
-  </div>
+  <div>{{ pageName }} created by (Vue, {{ createdBy }})</div>
 </template>
 
 <script>
@@ -15,19 +11,21 @@ export default {
     Counter
   },
   props: {
-    storeKey: String
+    pageName: String
   },
   created() {
-    if (typeof this.$store.state[this.storeKey] === 'undefined') {
-      this.$store.commit('SET_VALUE', {
-        storeKey: this.storeKey,
-        value: `created on ${process.env.VUE_ENV}`,
-      });
+    if (typeof this.$store.state[this.pageName] === 'string') {
+      return;
     }
+
+    this.$store.commit('SET_CREATED_BY', {
+      pageName: this.pageName,
+      createdBy: process.env.VUE_ENV,
+    });
   },
   computed: {
-    value() {
-      return this.$store.state[this.storeKey];
+    createdBy() {
+      return this.$store.state[this.pageName];
     }
   }
 }
