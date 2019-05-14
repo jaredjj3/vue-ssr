@@ -2,6 +2,12 @@ const fs = require('fs');
 const path = require('path');
 const Handlebars = require('handlebars');
 
+/**
+ * Scans the dir provided and loads all files with a .mustache basename.
+ *
+ * @param {string} dir
+ * @return {object}
+ */
 module.exports = (dir) => {
   const templates = {};
   fs.readdir(dir, (error, fileNames) => {
