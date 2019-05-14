@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <button @click="increment">Clicked {{count}} times!</button>
-  </div>
+  <button @click="increment">Clicked {{count}} times!</button>
 </template>
 
 <script>

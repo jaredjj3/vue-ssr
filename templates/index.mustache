@@ -1,9 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
   <body>
-    <div>{{ body }}</div>
+    <h1>Vue-in-Handlebars Test</h1>
+    <p>
+      The purpose of this test is to render Vue components inside of a mustache template.
+      First, the server will find the mustache template that matches the route.
+    </p>
+    <p>
+      During the first pass of rendering, Mustache will <em>synchronously</em> invoke
+      the template with a given context. Whenever the helper <code>renderVueComponent</code>
+      is called, it will render a placeholder string (as an HTML comment). The server
+      will keep track of Vue components that need to be rendered in the second pass.
+    </p>
+    <p>
+      During the second pass of rendering, the server will iterate over each component
+      and <em>asynchronously</em> render each component, setting each component's
+      <code>html</code> attribute. When all of these rendering promises are resolved,
+      the server injects the html into the response and then sends it to the client.
+    </p>
+    <p>
+      The client detects that this page was rendered using a mustache template
+      (using the presence of <code>window.__HYDRATION_SPECS__</code>), and then
+      iterates over each component and hydrates them separately, with a single
+      store instance.
+    </p>
+
+    <h2>Rendering Handlebars Context</h2>
+    <p>{{ msg }}</p>
+
+    <h2>Rendering Vue Components</h2>
+    <p>
+      These counters were rendered using the <code>renderVueComponent</code> helper.
+      They were rendered by Vue on the server, then hydrated on the client.
+      To test hydration, click a counter. The text inside the button will change
+      if the components are properly hydrated.
+    </p>
+
+    <code>{ initialCount: 4 }</code>
     {{{ renderVueComponent "Counter" initialCount=4 }}}
+    <br/>
+    <code>{ initialCount: 2 }</code>
     {{{ renderVueComponent "Counter" initialCount=2 }}}
+
+    <!-- The Assets component is needed to render the script tags that will set -->
+    <!-- window.__INITIAL_STATE__ and window.__HYDRATION_SPECS__ as well as     -->
+    <!-- fetch the client bundle in order to hydrate the components             -->
     {{{ renderVueComponent "Assets" }}}
   </body>
 </html>

@@ -8,12 +8,7 @@ const renderComponent = (context) => (resolve, reject) => {
   const component = getComponent(context.componentName);
 
   if (!component) {
-    return resolve(
-        new Vue({
-          store,
-          template: `<div></div>`,
-        })
-    );
+    reject({ code: 404, componentName: context.componentName });
   }
 
   const attrs = {};

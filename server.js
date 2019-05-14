@@ -37,7 +37,8 @@ app.get('/templates/:templateName', (req, res) => {
   // array is populated. The html returned by the template is a string
   // that has placeholders for Vue components.
   const template = templates[templateName];
-  const context = { body: 'rendered by (Handlebars, server)' };
+  const msg = 'This text was rendered by Handlebars on the server.';
+  const context = { msg };
   const components = [];
   registerHandlebarHelpers(components);
   const html = template(context);
@@ -51,8 +52,11 @@ app.get('/templates/:templateName', (req, res) => {
         res.status(200).send(injectComponents(html, components));
       })
       .catch((error) => {
-        console.error(error);
-        res.status(500).send(error.message);
+        if (error.code === 404) {
+          res.status(404).send(`component not found: '${error.componentName}'`);
+        } else {
+          res.status(500).send(error.message);
+        }
       });
 });
 

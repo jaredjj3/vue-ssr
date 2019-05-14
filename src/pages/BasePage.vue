@@ -1,5 +1,8 @@
 <template>
-  <div>{{ pageName }} created by (Vue, {{ createdBy }})</div>
+  <div>
+    <h1>{{ pageName }}</h1>
+    <p>This page was rendered by Vue on the {{ createdBy }}.</p>
+  </div>
 </template>
 
 <script>
