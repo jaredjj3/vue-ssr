@@ -4,31 +4,43 @@ import createStore from './store/createStore';
 import getComponent from './components/getComponent';
 import createApp from './app/createApp';
 
-// wait until router has resolved all async before hooks
-// and async components...
+/**
+ * @param {object} store
+ * @return {void}
+ */
+const syncStoreState = (store) => {
+  if (window.hasOwnProperty('__INITIAL_STATE__')) {
+    store.replaceState(window.__INITIAL_STATE__);
+  }
+};
+
+/**
+ * @param {object} store
+ * @param {HydrationSpec} hydrationSpec
+ * @return {Vue}
+ */
+const createVueInstance = (store, hydrationSpec) => {
+  const component = getComponent(hydrationSpec.componentName);
+  return new Vue({
+    store,
+    render: (h) => h(component, { props: hydrationSpec.props }),
+  });
+};
+
+// The presence of __HYDRATION_SPECS__ indicates that the server
+// used a mustache template and injected Vue components into the
+// already-rendered html.
 if (window.hasOwnProperty('__HYDRATION_SPECS__')) {
   const store = createStore();
-
-  // prime the store with server-initialized state.
-  // the state is determined during SSR and inlined in the page markup.
-  if (window.hasOwnProperty('__INITIAL_STATE__')) {
-    store.replaceState(window.__INITIAL_STATE__);
-  }
-
-  for (const spec of window.__HYDRATION_SPECS__) {
-    const component = getComponent(spec.componentName);
-    const vm = new Vue({
-      store,
-      render: (h) => h(component, { props: spec.props }),
-    });
-    vm.$mount(`#${spec.id}`);
+  syncStoreState(store);
+  for (const hydrationSpec of window.__HYDRATION_SPECS__) {
+    const vm = createVueInstance(store, hydrationSpec);
+    vm.$mount(`#${hydrationSpec.id}`);
   }
 } else {
-  const { app, store } = createApp();
-
-  if (window.hasOwnProperty('__INITIAL_STATE__')) {
-    store.replaceState(window.__INITIAL_STATE__);
-  }
-
-  app.$mount('#app');
+  const { app, store, router } = createApp();
+  syncStoreState(store);
+  router.onReady(() => {
+    app.$mount('#app');
+  });
 }
