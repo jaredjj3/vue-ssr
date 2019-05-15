@@ -17,7 +17,7 @@ GET | `/` | Redirects to `/foo`
 GET | `/foo` | Sets the value of `foo` in the store to the return of `process.env.VUE_ENV` ('server' or 'client')
 GET | `/bar` | Sets the value of `bar` in the store to the return of `process.env.VUE_ENV` ('server' or 'client')
 GET | `/baz` | Sets the value of `baz` in the store to the return of `process.env.VUE_ENV` ('server' or 'client')
-GET | `/templates/:templateName` | Renders mustache template by the name of `templateName`
+GET | `/templates/:templateName?msg=msg` | Renders mustache template by the name of `templateName` and renders msg using Handlebars
 
 `/`, `/foo`, `/bar`, `/baz` are examples of classic Vue SSR approach. In the long term, this will be the primary (and hopefully only) way to render pages.
 
