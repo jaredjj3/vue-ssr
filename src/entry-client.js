@@ -23,7 +23,7 @@ const createVueInstance = (store, hydrationSpec) => {
   const component = getComponent(hydrationSpec.componentName);
   return new Vue({
     store,
-    render: (h) => h(component, { props: hydrationSpec.props }),
+    render: (h) => h(component, { props: hydrationSpec.props || {} }),
   });
 };
 
