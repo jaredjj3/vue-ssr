@@ -23,6 +23,6 @@ module.exports = (bundle, clientManifest, context) => {
   // exported function of entry-server.js
   return renderer.renderToString({
     ...context,
-    isPage: true,
+    shouldRenderApp: true,
   });
 };

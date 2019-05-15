@@ -1,27 +1,30 @@
 const Handlebars = require('handlebars');
-const createComponent = require('./createComponent');
+const createSurrogate = require('./createSurrogate');
 
 /**
  * Returns a function that will be called when Handlebars uses the
- * renderVueComponent helper. The components argument is populated
+ * renderVueComponent helper. The surrogates argument is populated
  * every time the renderVueComponent helper is called.
  *
- * @param {Component[]} components
+ * @param {Surrogate[]} surrogates
  * @return {Function}
  */
-const getHelper = (components) => (componentName, options) => {
-  const component = createComponent(componentName, options.hash);
-  components.push(component);
-  return component.placeholder;
+const getRenderVueComponent = (surrogates) => (componentName, options) => {
+  const surrogate = createSurrogate(componentName, options.hash);
+  surrogates.push(surrogate);
+  return surrogate.placeholder;
 };
 
 /**
  * Reregister renderVueComponent helper. Calling this function multiple
  * times reregisters the helper.
  *
- * @param {Component[]} components
+ * @param {Surrogate[]} components
  * @return {void}
  */
 module.exports = (components) => {
-  Handlebars.registerHelper('renderVueComponent', getHelper(components));
+  Handlebars.registerHelper(
+      'renderVueComponent',
+      getRenderVueComponent(components)
+  );
 };

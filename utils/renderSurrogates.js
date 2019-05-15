@@ -2,26 +2,26 @@ const { createBundleRenderer } = require('vue-server-renderer');
 const createHydrationSpec = require('./createHydrationSpec');
 
 /**
- * @param {Component} component
+ * @param {Surrogate} surrogate
  * @return {boolean}
  */
-const isAssetsComponent = (component) => {
-  return component.componentName === 'Assets';
+const isAssetsSurrogate = (surrogate) => {
+  return surrogate.componentName === 'Assets';
 };
 
 /**
  * Creates an array of hydration specs, which are sent to the client to
- * instruct it how to hydrate each component. If a component is an
- * assets component, it is skipped since it isn't valid to hydrate it.
+ * instruct it how to hydrate each component. If a surrogate is an
+ * assets surrogate, it is skipped since it isn't valid to hydrate it.
  *
- * @param {Component[]} components
+ * @param {Surrogate[]} surrogates
  * @return {HydrationSpec[]}
  */
-const getHydrationSpecs = (components) => {
+const createHydrationSpecs = (surrogates) => {
   const hydrationSpecs = [];
-  for (const component of components) {
-    if (!isAssetsComponent(component)) {
-      const hydrationSpec = createHydrationSpec(component);
+  for (const surrogate of surrogates) {
+    if (!isAssetsSurrogate(surrogate)) {
+      const hydrationSpec = createHydrationSpec(surrogate);
       hydrationSpecs.push(hydrationSpec);
     }
   }
@@ -57,11 +57,14 @@ const renderState = (context, windowKey, state) => {
  * render the assets component. This template should only be used for the
  * assets template.
  *
- * @param {Component[]} components
- * @param {function} getStore
- * @return {function}
+ * See https://ssr.vuejs.org/api/#template for valid arguments for a
+ * template.
+ *
+ * @param {Surrogate[]} surrogates
+ * @param {Function} getStore
+ * @return {Function}
  */
-const getAssetsTemplate = (components, getStore) => (_html, context) => {
+const getAssetsTemplate = (surrogates, getStore) => (_html, context) => {
   const windowInitialStateScript = renderState(
       context,
       '__INITIAL_STATE__',
@@ -71,7 +74,7 @@ const getAssetsTemplate = (components, getStore) => (_html, context) => {
   const windowHydrationSpecsScript = renderState(
       context,
       '__HYDRATION_SPECS__',
-      getHydrationSpecs(components)
+      createHydrationSpecs(surrogates)
   );
 
   const clientBundleScripts = context.renderScripts();
@@ -87,12 +90,12 @@ const getAssetsTemplate = (components, getStore) => (_html, context) => {
  * The purpose of this function is to populate the html attribute in-place
  * of the components argument.
  *
- * @param {ServerBundle} bundle
- * @param {ClientManifest} clientManifest
- * @param {Component[]} components
+ * @param {object} bundle
+ * @param {object} clientManifest
+ * @param {Surrogate[]} surrogates
  * @return {Promise<void>}
  */
-module.exports = (bundle, clientManifest, components) => {
+module.exports = (bundle, clientManifest, surrogates) => {
   // This stateful function is used to only create the store once
   // It can be called with or without a createStore function
   const getStore = (() => {
@@ -106,24 +109,24 @@ module.exports = (bundle, clientManifest, components) => {
 
   // Populate the renderPromises array
   const renderPromises = [];
-  for (const component of components) {
+  for (const surrogate of surrogates) {
     let template; // ok to be undefined
-    if (isAssetsComponent(component)) {
-      template = getAssetsTemplate(components, getStore);
+    if (isAssetsSurrogate(surrogate)) {
+      template = getAssetsTemplate(surrogates, getStore);
     }
     const renderer = createBundleRenderer(bundle, {
       clientManifest,
       template,
     });
     const context = {
-      ...component,
+      surrogate,
       getStore,
-      isPage: false,
+      shouldRenderApp: false,
     };
     // renderer.renderToString(context) passes the context to the
     // exported function of entry-server.js
     const renderPromise = renderer.renderToString(context).then((html) => {
-      component.html = html;
+      surrogate.html = html;
     });
     renderPromises.push(renderPromise);
   }

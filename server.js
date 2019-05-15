@@ -1,12 +1,12 @@
+const express = require('express');
+const path = require('path');
 const bundle = require('./dist/vue-ssr-server-bundle.json');
 const clientManifest = require('./dist/vue-ssr-client-manifest.json');
-const express = require('express');
 const getHandlebarsTemplates = require('./utils/getHandlebarsTemplates');
-const injectComponents = require('./utils/injectComponents');
-const path = require('path');
 const registerHandlebarHelpers = require('./utils/registerHandlebarHelpers');
-const renderComponents = require('./utils/renderComponents');
 const renderPage = require('./utils/renderPage');
+const renderSurrogates = require('./utils/renderSurrogates');
+const applySurrogatesToStr = require('./utils/applySurrogatesToStr');
 
 const DEFAULT_MSG = 'This text was rendered by Handlebars on the server.';
 
@@ -33,30 +33,30 @@ app.get('/templates/:templateName', (req, res) => {
   }
 
   // Before rendering the Handlebars template, register new helpers that
-  // have the components array as part of its context. The helper that
-  // marries the mustache template with the components variable is called
-  // renderVueComponent. This is the mechanism by which the components
+  // have the surrogates array as part of its context. The helper that
+  // marries the mustache template with the surrogates variable is called
+  // renderVueComponent. This is the mechanism by which the surrogates
   // array is populated. The html returned by the template is a string
-  // that has placeholders for Vue components.
+  // that has placeholders for Vue surrogates.
   const template = templates[templateName];
   const msg = req.query.msg || DEFAULT_MSG;
-  const context = { msg };
-  const components = [];
-  registerHandlebarHelpers(components);
-  const html = template(context);
+  const surrogates = [];
+  registerHandlebarHelpers(surrogates);
+  const html = template({ msg });
 
-  // The renderComponents helper populates each component's html attribute
-  // in place. After the promise resolves, injectComponents takes the html
-  // and placeholder attributes to inject the Vue components markup into
-  // the html that's returned to the caller.
-  renderComponents(bundle, clientManifest, components)
+  // The renderSurrogates helper populates each surrogate's html attribute
+  // in place. After the promise resolves, applySurrogatesToStr takes html
+  // attribute of each surrogate and inject it to the final html string that
+  // is sent to the requester.
+  renderSurrogates(bundle, clientManifest, surrogates)
       .then(() => {
-        res.status(200).send(injectComponents(html, components));
+        res.status(200).send(applySurrogatesToStr(surrogates, html));
       })
       .catch((error) => {
         if (error.code === 404) {
           res.status(404).send(`component not found: '${error.componentName}'`);
         } else {
+          console.error(error.stack);
           res.status(500).send(error.message);
         }
       });

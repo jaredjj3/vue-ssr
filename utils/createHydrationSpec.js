@@ -1,12 +1,12 @@
 /**
  * Factory function for a HydrationSpec, the information needed
- * by the client to hydrate a component.
+ * by the client to hydrate HTML.
  *
- * @param {Component} component
+ * @param {Surrogate} surrogate
  * @return {HydrationSpec}
  */
-module.exports = (component) => {
-  const { id, componentName, props } = component;
+module.exports = (surrogate) => {
+  const { id, componentName, props } = surrogate;
 
   return {
     id,
