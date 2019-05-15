@@ -120,6 +120,8 @@ module.exports = (bundle, clientManifest, components) => {
       getStore,
       isPage: false,
     };
+    // renderer.renderToString(context) passes the context to the
+    // exported function of entry-server.js
     const renderPromise = renderer.renderToString(context).then((html) => {
       component.html = html;
     });

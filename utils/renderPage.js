@@ -9,9 +9,6 @@ const templatePath = path.resolve(
 const template = fs.readFileSync(templatePath, 'utf-8');
 
 /**
- * Creates a bundle renderer which passes the context to the function
- * exported to ./src/entry-server.js.
- *
  * @param {object} bundle
  * @param {object} clientManifest
  * @param {object} context
@@ -22,6 +19,8 @@ module.exports = (bundle, clientManifest, context) => {
     clientManifest,
     template,
   });
+  // renderer.renderToString(context) passes the context to the
+  // exported function of entry-server.js
   return renderer.renderToString({
     ...context,
     isPage: true,
