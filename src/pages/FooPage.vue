@@ -10,5 +10,8 @@ export default {
   components: {
     BasePage
   },
+  asyncData(context) {
+    console.log(context);
+  }
 }
 </script>

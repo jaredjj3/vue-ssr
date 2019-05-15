@@ -12,7 +12,7 @@ export default {
     pageName: String
   },
   created() {
-    if (typeof this.$store.state[this.pageName] === 'string') {
+    if (this.$store.state[this.pageName]) {
       return;
     }
 

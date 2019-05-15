@@ -30,9 +30,9 @@ const renderComponent = (context) => (resolve, reject) => {
 const renderPage = (context) => (resolve, reject) => {
   const { app, router, store } = createApp();
 
+  // handle redirects
   const { url } = context;
   const { fullPath } = router.resolve(url).route;
-
   if (fullPath !== url) {
     return reject({ url: fullPath });
   }
@@ -51,7 +51,7 @@ const renderPage = (context) => (resolve, reject) => {
     const promises = [];
     for (const matchedComponent of matchedComponents) {
       if (typeof matchedComponent.asyncData === 'function') {
-        const promise = asyncData({
+        const promise = matchedComponent.asyncData({
           store,
           route: router.currentRoute,
         });
