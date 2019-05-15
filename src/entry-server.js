@@ -13,7 +13,7 @@ const renderComponent = (context) => (resolve, reject) => {
 
   const attrs = {};
   if (context.id) {
-    attrs.id = context.id.toString();
+    attrs.id = context.id;
   }
 
   const app = new Vue({
