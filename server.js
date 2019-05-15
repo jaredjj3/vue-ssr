@@ -8,6 +8,8 @@ const registerHandlebarHelpers = require('./utils/registerHandlebarHelpers');
 const renderComponents = require('./utils/renderComponents');
 const renderPage = require('./utils/renderPage');
 
+const DEFAULT_MSG = 'This text was rendered by Handlebars on the server.';
+
 // setup
 const app = express();
 const templates = getHandlebarsTemplates('./templates/');
@@ -37,7 +39,7 @@ app.get('/templates/:templateName', (req, res) => {
   // array is populated. The html returned by the template is a string
   // that has placeholders for Vue components.
   const template = templates[templateName];
-  const msg = 'This text was rendered by Handlebars on the server.';
+  const msg = req.query.msg || DEFAULT_MSG;
   const context = { msg };
   const components = [];
   registerHandlebarHelpers(components);
