@@ -11,7 +11,7 @@ export default {
     BasePage
   },
   asyncData(context) {
-    console.log(context);
+    console.log('foo page async data');
   }
 }
 </script>
