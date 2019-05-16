@@ -1,7 +1,6 @@
 # vue-ssr
 
-The purpose of this project is to gain an understanding of how to render Vue
-components on the server side.
+The purpose of this project is to develop a solution that allows Vue components to be rendered in Handlebars templates.
 
 ## Running
 
