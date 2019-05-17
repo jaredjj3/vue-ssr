@@ -43,9 +43,11 @@
     <code>{ initialCount: 2 }</code>
     {{{ renderVueComponent "Counter" initialCount=2 }}}
 
-    <!-- The Assets component is needed to render the script tags that will set -->
-    <!-- window.__INITIAL_STATE__ and window.__HYDRATION_SPECS__ as well as     -->
-    <!-- fetch the client bundle in order to hydrate the components             -->
+    <!--
+      The Assets component is needed to render the script tags that will set
+      window.__INITIAL_STATE__ and window.__HYDRATION_SPECS__ as well as
+      fetch the client bundle in order to hydrate the components
+    -->
     {{{ renderVueComponent "Assets" }}}
   </body>
 </html>
